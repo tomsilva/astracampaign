@@ -1,0 +1,60 @@
+# Internacionalización (i18n) del Frontend - Astra Campaign
+
+## Objetivo
+Implementar soporte multiidioma en el frontend para tres idiomas: Español, Inglés y Portugués.
+
+## Tareas
+
+### Fase 1: Configuración Inicial
+- [x] Instalar `react-i18next` e `i18next` como dependencias
+- [x] Crear estructura de archivos de traducción en `src/locales/`
+- [x] Configurar i18n en el proyecto (crear [src/i18n.ts](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/i18n.ts))
+- [x] Crear hook personalizado y contexto para gestión de idioma
+
+### Fase 2: Archivos de Traducción
+- [x] Crear [src/locales/es/translation.json](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/locales/es/translation.json) (Español)
+- [x] Crear [src/locales/en/translation.json](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/locales/en/translation.json) (Inglés)  
+- [x] Crear [src/locales/pt/translation.json](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/locales/pt/translation.json) (Portugués)
+
+### Fase 3: Componentes Base
+- [x] Crear selector de idioma ([LanguageSelector.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/LanguageSelector.tsx))
+- [x] Integrar selector en la navegación
+- [x] Integrar selector en el header
+- [x] Persistir preferencia de idioma en localStorage
+
+### Fase 4: Migración de Textos - Páginas
+- [x] [LoginPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/LoginPage.tsx) - Migrar textos a claves i18n
+- [x] [ContactsPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/ContactsPage.tsx) - Migrar textos a claves i18n
+- [x] [UsersPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/UsersPage.tsx) - Migrar textos a claves i18n
+- [x] [WhatsAppConnectionsPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/WhatsAppConnectionsPage.tsx) - Migrar textos a claves i18n
+- [/] [SettingsPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/SettingsPage.tsx) - Migrar textos a claves i18n (parcialmente completado)
+- [/] [CampaignsPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/CampaignsPage.tsx) - Migrar textos a claves i18n (archivo grande)
+- [ ] [SuperAdminPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/SuperAdminPage.tsx) y relacionadas - Migrar textos
+- [ ] [FlowBuilderPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/FlowBuilderPage.tsx) - Migrar textos a claves i18n
+- [ ] [InteractiveCampaignPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/InteractiveCampaignPage.tsx) - Migrar textos a claves i18n
+
+### Fase 5: Migración de Textos - Componentes
+- [x] [Navigation.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/Navigation.tsx) - Migrar textos a claves i18n
+- [x] [Header.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/Header.tsx) - Migrar textos a claves i18n
+- [x] [Pagination.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/Pagination.tsx) - Migrar textos a claves i18n
+- [x] [SearchAndFilters.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/SearchAndFilters.tsx) - Migrar textos a claves i18n
+- [ ] [ContactForm.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/ContactForm.tsx) - Migrar textos a claves i18n
+- [ ] [ContactList.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/ContactList.tsx) - Migrar textos a claves i18n
+- [ ] [CategoryModal.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/CategoryModal.tsx) - Migrar textos a claves i18n
+- [ ] [CSVImportModal.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/CSVImportModal.tsx) - Migrar textos a claves i18n
+- [ ] [BulkEditModal.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/BulkEditModal.tsx) - Migrar textos a claves i18n
+- [ ] [ChatwootSyncModal.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/ChatwootSyncModal.tsx) - Migrar textos a claves i18n
+- [ ] [PerfexImportModal.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/PerfexImportModal.tsx) / [PerfexSyncModal.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/PerfexSyncModal.tsx)
+- [ ] Otros componentes menores
+
+### Fase 6: Validaciones y Mensajes
+- [ ] Migrar mensajes de validación Zod
+- [ ] Migrar mensajes de toast (react-hot-toast)
+- [ ] Migrar mensajes de error de API
+
+### Fase 7: Verificación
+- [x] Build de producción compilando correctamente
+- [ ] Probar cambio de idioma en todas las páginas
+- [ ] Verificar persistencia del idioma
+- [ ] Revisar que no queden textos hardcoded
+

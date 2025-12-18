@@ -1,0 +1,175 @@
+# Walkthrough: Internacionalización (i18n) - Astra Campaign
+
+## Resumen
+
+Se implementó el sistema de internacionalización en el frontend de Astra Campaign con soporte completo para **tres idiomas**:
+- 🇧🇷 **Portugués** (idioma por defecto)
+- 🇪🇸 **Español**
+- 🇬🇧 **Inglés**
+
+---
+
+## Demostración
+
+### Video de Cambio de Idioma
+
+![Demostración del selector de idioma](C:/Users/tom_j/.gemini/antigravity/brain/ea3fd76c-212c-41aa-a1fc-f895f3577d29/i18n_demo_1765868797341.webp)
+
+### Capturas de Pantalla
+
+````carousel
+![Página de Login en Portugués](C:/Users/tom_j/.gemini/antigravity/brain/ea3fd76c-212c-41aa-a1fc-f895f3577d29/login_page_pt_1765868880806.png)
+<!-- slide -->
+![Selector de Idioma Abierto](C:/Users/tom_j/.gemini/antigravity/brain/ea3fd76c-212c-41aa-a1fc-f895f3577d29/lang_dropdown_open_1765868913478.png)
+<!-- slide -->
+![Página de Login en Español](C:/Users/tom_j/.gemini/antigravity/brain/ea3fd76c-212c-41aa-a1fc-f895f3577d29/login_page_es_1765868947071.png)
+<!-- slide -->
+![Página de Login en Inglés](C:/Users/tom_j/.gemini/antigravity/brain/ea3fd76c-212c-41aa-a1fc-f895f3577d29/login_page_en_1765869015728.png)
+````
+
+---
+
+## Cambios Realizados
+
+### 1. Dependencias Instaladas
+
+```bash
+npm install i18next react-i18next i18next-browser-languagedetector
+```
+
+### 2. Archivos Nuevos Creados
+
+| Archivo | Descripción |
+|---------|-------------|
+| [i18n.ts](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/i18n.ts) | Configuración principal de i18next |
+| [locales/pt/translation.json](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/locales/pt/translation.json) | Traducciones en Portugués |
+| [locales/es/translation.json](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/locales/es/translation.json) | Traducciones en Español |
+| [locales/en/translation.json](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/locales/en/translation.json) | Traducciones en Inglés |
+| [LanguageSelector.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/components/LanguageSelector.tsx) | Componente selector de idioma |
+
+### 3. Componentes Actualizados
+
+render_diffs(file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/main.tsx)
+
+render_diffs(file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/components/Header.tsx)
+
+render_diffs(file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/components/Navigation.tsx)
+
+### 4. Páginas Actualizadas
+
+- ✅ [LoginPage.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/pages/LoginPage.tsx)
+- ✅ [ContactsPage.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/pages/ContactsPage.tsx)
+- ✅ [UsersPage.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/pages/UsersPage.tsx)
+- ✅ [CampaignsPage.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/pages/CampaignsPage.tsx)
+- ✅ [SettingsPage.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/pages/SettingsPage.tsx)
+- ✅ [SuperAdminPage.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/pages/SuperAdminPage.tsx)
+- ✅ [FlowBuilderPage.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/pages/FlowBuilderPage.tsx)
+- ✅ [WhatsAppConnectionsPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/WhatsAppConnectionsPage.tsx) (Migrated previously)
+
+### 5. Componentes Adicionales Actualizados
+
+- ✅ [Pagination.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/components/Pagination.tsx)
+- ✅ [SearchAndFilters.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/components/SearchAndFilters.tsx)
+
+---
+
+## Cómo Usar
+
+### Selector de Idioma
+
+El selector de idioma está disponible en **dos lugares**:
+
+1. **Header** - En la barra superior, junto al selector de tenant
+2. **Navigation** - En el menú lateral, debajo de las opciones de menú
+
+![Selector de Idioma](El selector muestra las banderas de los idiomas disponibles)
+
+### Persistencia
+
+El idioma seleccionado se guarda en `localStorage` con la clave `astra-language` y se restaura automáticamente al recargar la página.
+
+### Agregar Nuevas Traducciones
+
+Para agregar nuevos textos traducibles:
+
+1. Agregar la clave en los tres archivos de traducción:
+   - [src/locales/pt/translation.json](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/locales/pt/translation.json)
+   - [src/locales/es/translation.json](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/locales/es/translation.json)
+   - [src/locales/en/translation.json](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/locales/en/translation.json)
+
+2. Usar en el componente:
+```tsx
+import { useTranslation } from 'react-i18next';
+
+function MyComponent() {
+  const { t } = useTranslation();
+  
+  return <h1>{t('mySection.myKey')}</h1>;
+}
+```
+
+---
+
+## Verificación
+
+### Build de Producción
+```bash
+npm run build
+```
+✅ **Resultado**: Build completado exitosamente
+
+### Servidor de Desarrollo
+```bash
+npm run dev
+```
+
+---
+
+## Trabajo Pendiente
+
+Las siguientes páginas y componentes aún tienen textos hardcoded:
+
+### Páginas Grandes (Requieren Migración)
+- [x] [CampaignsPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/CampaignsPage.tsx) (~143KB - archivo muy grande)
+- [x] [SettingsPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/SettingsPage.tsx)
+- [x] [WhatsAppConnectionsPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/WhatsAppConnectionsPage.tsx)
+- [x] [SuperAdminPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/SuperAdminPage.tsx) y relacionadas
+- [x] [FlowBuilderPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/FlowBuilderPage.tsx)
+- [x] [InteractiveCampaignPage.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/InteractiveCampaignPage.tsx)
+
+
+### Componentes Pendientes
+- [x] [ContactForm.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/ContactForm.tsx) (Completed)
+- [x] [ContactList.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/ContactList.tsx) (Completed)
+- [x] [CategoryModal.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/CategoryModal.tsx) (Completed)
+- [x] [CSVImportModal.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/CSVImportModal.tsx) (Completed)
+- [x] [BulkEditModal.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/BulkEditModal.tsx) (Completed)
+- [x] [ChatwootSyncModal.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/ChatwootSyncModal.tsx) (Completed)
+- [x] [PerfexImportModal.tsx](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/components/PerfexImportModal.tsx) (Completed)
+- [ ] Y otros modales
+
+> [!TIP]
+> El patrón de implementación ya está establecido. Para migrar los archivos restantes, simplemente sigue el mismo patrón: importar `useTranslation`, obtener la función [t()](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/SuperAdminPage.tsx#5-26), y reemplazar los textos hardcoded con llamadas a [t('clave')](file:///h:/cama%C3%B1a%20astra%20online/source/astracampaign/frontend/src/pages/SuperAdminPage.tsx#5-26).
+
+---
+
+## Estructura de Claves de Traducción
+
+```
+translation.json
+├── common          # Textos comunes (botones, estados)
+├── auth            # Login, logout, validaciones
+├── navigation      # Menú de navegación
+├── header          # Encabezado (roles de usuario)
+├── contacts        # Página de contactos
+├── categories      # Gestión de categorías
+├── campaigns       # Campañas
+├── users           # Usuarios
+├── whatsapp        # Conexiones WhatsApp
+├── settings        # Configuraciones
+├── superAdmin      # Panel Super Admin
+├── flowBuilder     # Editor de flujos
+├── errors          # Mensajes de error
+├── language        # Nombres de idiomas
+└── pagination      # Paginación
+```

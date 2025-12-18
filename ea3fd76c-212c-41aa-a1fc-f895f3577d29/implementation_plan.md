@@ -1,0 +1,322 @@
+# Plan de Internacionalización (i18n) - Astra Campaign Frontend
+
+## Descripción del Problema
+
+El frontend de **Astra Campaign** actualmente tiene todos los textos de la interfaz de usuario **hardcoded en portugués**. Se requiere implementar soporte para **tres idiomas**:
+- 🇪🇸 **Español** (es)
+- 🇬🇧 **Inglés** (en)
+- 🇧🇷 **Portugués** (pt) - idioma actual
+
+## Análisis del Estado Actual
+
+### Tecnologías del Frontend
+| Tecnología | Versión | Uso |
+|------------|---------|-----|
+| React | 18.2.0 | Framework UI |
+| TypeScript | 5.9.2 | Tipado estático |
+| Vite | 5.0.8 | Build tool |
+| Tailwind CSS | 3.3.6 | Estilos |
+| React Router | 7.9.1 | Navegación |
+
+### Archivos a Modificar
+
+Se identificaron los siguientes archivos con textos hardcoded:
+
+**Páginas** (15 archivos en `src/pages/`):
+- `LoginPage.tsx` - Formulario de login, mensajes de bienvenida
+- `ContactsPage.tsx` - Gestión de contactos
+- `CampaignsPage.tsx` - Gestión de campañas (~143KB, archivo grande)
+- `UsersPage.tsx` - Gestión de usuarios
+- `SettingsPage.tsx` - Configuraciones
+- `WhatsAppConnectionsPage.tsx` - Conexiones WhatsApp
+- `FlowBuilderPage.tsx` - Editor de flujos
+- `InteractiveCampaignPage.tsx` - Campañas interactivas
+- `SuperAdminPage.tsx`, `SuperAdminDashboard.tsx`, `SuperAdminManagerPage.tsx`
+
+**Componentes** (27+ archivos en `src/components/`):
+- `Navigation.tsx` - Menú de navegación lateral
+- `Header.tsx` - Encabezado de páginas
+- `ContactForm.tsx`, `ContactList.tsx` - Formularios de contactos
+- `CategoryModal.tsx`, `CSVImportModal.tsx`, `BulkEditModal.tsx`
+- `ChatwootSyncModal.tsx`, `PerfexImportModal.tsx`
+- Y más...
+
+---
+
+## Propuesta de Implementación
+
+### Librería Recomendada: `react-i18next`
+
+La elección de **react-i18next** se basa en:
+- ✅ Es el estándar de facto para i18n en React
+- ✅ Excelente integración con TypeScript
+- ✅ Soporte para lazy loading de traducciones
+- ✅ Hooks modernos (`useTranslation`)
+- ✅ Amplia comunidad y documentación
+
+---
+
+## Proposed Changes
+
+### Dependencias
+
+#### [MODIFY] [package.json](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/package.json)
+
+Agregar las siguientes dependencias:
+```json
+{
+  "dependencies": {
+    "i18next": "^24.2.0",
+    "react-i18next": "^15.4.0",
+    "i18next-browser-languagedetector": "^8.0.0"
+  }
+}
+```
+
+---
+
+### Configuración i18n
+
+#### [NEW] [i18n.ts](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/i18n.ts)
+
+Archivo de configuración principal de i18next:
+```typescript
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+
+import esTranslation from './locales/es/translation.json';
+import enTranslation from './locales/en/translation.json';
+import ptTranslation from './locales/pt/translation.json';
+
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources: {
+      es: { translation: esTranslation },
+      en: { translation: enTranslation },
+      pt: { translation: ptTranslation }
+    },
+    fallbackLng: 'pt', // Idioma actual como fallback
+    interpolation: {
+      escapeValue: false
+    },
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage']
+    }
+  });
+
+export default i18n;
+```
+
+---
+
+### Estructura de Archivos de Traducción
+
+#### [NEW] [locales/](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/locales/)
+
+```
+src/locales/
+├── es/
+│   └── translation.json    # Español
+├── en/
+│   └── translation.json    # Inglés
+└── pt/
+    └── translation.json    # Portugués (actual)
+```
+
+#### Ejemplo de estructura de claves:
+
+```json
+{
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito"
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenido",
+      "subtitle": "Inicia sesión para acceder a tu cuenta",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "submit": "Entrar",
+      "submitting": "Entrando..."
+    },
+    "validation": {
+      "invalidEmail": "Correo electrónico inválido",
+      "passwordMinLength": "La contraseña debe tener al menos 6 caracteres"
+    }
+  },
+  "navigation": {
+    "connections": "Conexiones",
+    "contacts": "Contactos",
+    "campaigns": "Campañas",
+    "interactiveCampaign": "Campaña Interactiva",
+    "users": "Usuarios",
+    "settings": "Configuraciones",
+    "superAdmin": "Super Admin",
+    "logout": "Salir"
+  },
+  "contacts": {
+    "title": "Contactos",
+    "newContact": "Nuevo Contacto",
+    "categories": "Categorías",
+    "importCSV": "Importar CSV",
+    "selectedCount": "{{count}} contacto(s) seleccionado(s)",
+    "totalCount": "{{count}} contactos registrados"
+  }
+  // ... más secciones
+}
+```
+
+---
+
+### Componente Selector de Idioma
+
+#### [NEW] [LanguageSelector.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/components/LanguageSelector.tsx)
+
+```typescript
+import { useTranslation } from 'react-i18next';
+
+const languages = [
+  { code: 'es', name: 'Español', flag: '🇪🇸' },
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'pt', name: 'Português', flag: '🇧🇷' }
+];
+
+export function LanguageSelector() {
+  const { i18n } = useTranslation();
+
+  return (
+    <select
+      value={i18n.language}
+      onChange={(e) => i18n.changeLanguage(e.target.value)}
+      className="..."
+    >
+      {languages.map((lang) => (
+        <option key={lang.code} value={lang.code}>
+          {lang.flag} {lang.name}
+        </option>
+      ))}
+    </select>
+  );
+}
+```
+
+---
+
+### Modificación de Componentes Existentes
+
+#### [MODIFY] [main.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/main.tsx)
+
+Importar configuración de i18n:
+```diff
++ import './i18n';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+```
+
+#### [MODIFY] [LoginPage.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/pages/LoginPage.tsx)
+
+Ejemplo de migración:
+```diff
++ import { useTranslation } from 'react-i18next';
+
+export function LoginPage() {
++ const { t } = useTranslation();
+  
+  const loginSchema = z.object({
+-   email: z.string().email('E-mail inválido'),
+-   senha: z.string().min(6, 'Senha deve ter pelo menos 6 caracteres'),
++   email: z.string().email(t('auth.validation.invalidEmail')),
++   senha: z.string().min(6, t('auth.validation.passwordMinLength')),
+  });
+
+  return (
+    <div>
+-     <h2>Bem-vindo!</h2>
+-     <p>Faça login para acessar sua conta</p>
++     <h2>{t('auth.login.title')}</h2>
++     <p>{t('auth.login.subtitle')}</p>
+      {/* ... */}
+    </div>
+  );
+}
+```
+
+#### [MODIFY] [Navigation.tsx](file:///h:/camaña%20astra%20online/source/astracampaign/frontend/src/components/Navigation.tsx)
+
+```diff
++ import { useTranslation } from 'react-i18next';
+
+export function Navigation() {
++ const { t } = useTranslation();
+
+  const menuItems = [
+    {
+      path: '/whatsapp',
+-     label: 'Conexões',
++     label: t('navigation.connections'),
+      icon: (...)
+    },
+    // ...
+  ];
+}
+```
+
+---
+
+## Verificación
+
+### Tests Manuales
+1. Verificar que el cambio de idioma funciona en todas las páginas
+2. Verificar que el idioma se persiste al recargar la página
+3. Verificar que no quedan textos hardcoded sin traducir
+4. Verificar que las interpolaciones (ej: `{{count}}`) funcionan correctamente
+
+### Comandos
+```bash
+# Instalar dependencias
+npm install i18next react-i18next i18next-browser-languagedetector
+
+# Ejecutar en desarrollo
+npm run dev
+
+# Build de producción
+npm run build
+```
+
+---
+
+## Estimación de Esfuerzo
+
+| Fase | Archivos | Complejidad | Esfuerzo Estimado |
+|------|----------|-------------|-------------------|
+| Configuración | 3-4 | Baja | 1-2 horas |
+| Archivos de traducción | 3 | Media | 4-6 horas |
+| Migración de páginas | 10-15 | Alta | 8-12 horas |
+| Migración de componentes | 25+ | Alta | 10-15 horas |
+| Testing | - | Media | 2-3 horas |
+| **Total** | **40+** | - | **25-38 horas** |
+
+---
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Decisiones que requieren aprobación:**
+
+1. **Idioma por defecto**: ¿Debería ser Portugués (actual) o Español?
+2. **Ubicación del selector de idioma**: ¿En el Header, en la Navigation, o ambos?
+3. **Alcance inicial**: ¿Desea que comience con todas las páginas o solo las principales (Login, Contacts, Campaigns)?
+
+> [!WARNING]
+> Este es un proyecto extenso que modificará **40+ archivos**. Se recomienda hacerlo en fases para facilitar el review.
